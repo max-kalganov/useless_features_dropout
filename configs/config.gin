@@ -3,17 +3,19 @@
 # Dataset
 get_dataset.n_samples = 10000
 get_dataset.train_test_split = 0.7
+get_dataset.seed = 0
 
 # Base model
 get_model.add_exp_layer = None
 get_model.optimizer = 'adam'
 get_model.loss = 'mse'
 get_model.metrics = ['accuracy']
+get_model.seed = 0
 
 # Experiment
-exp_name = ''
+exp_name = 'no_dropout'
 run_experiment.batch_size = 1000
 run_experiment.epochs = 100
-run_experiment.tensorboard_logs = data/logs/ + %exp_name
-run_experiment.results_file = data/model_results.csv
+run_experiment.tensorboard_logs_name = %exp_name
+run_experiment.results_file = "data/model_results.csv"
 run_experiment.exp_name = %exp_name
