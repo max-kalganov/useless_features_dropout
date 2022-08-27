@@ -9,6 +9,7 @@ from constants import FEATURES_NUMBER
 
 @gin.configurable
 def get_model(add_exp_layer: Optional[Callable], optimizer, loss, metrics) -> tf.keras.models.Model:
+    tf.random.set_seed(0)
     x_input = tf.keras.layers.Input((FEATURES_NUMBER,))
 
     if add_exp_layer is not None:
