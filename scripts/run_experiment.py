@@ -1,8 +1,8 @@
 """Runs experiment using gin config"""
 import gin
 import tensorflow as tf
-from model import get_model
-from dataset_generator import get_dataset
+from src.model import get_model
+from src.dataset_generator import get_dataset
 
 
 def dump_results(model_results, results_file: str, exp_name: str):
@@ -27,6 +27,6 @@ def run_experiment(batch_size: int, epochs: int, tensorboard_logs: str, results_
 
 
 if __name__ == '__main__':
-    gin.parse_config_file("config.gin")
+    gin.parse_config_file("../configs/config.gin")
 
     run_experiment()

@@ -4,7 +4,7 @@ from typing import Tuple
 import gin
 import numpy as np
 
-from constants import FEATURES_NUMBER
+from src.constants import FEATURES_NUMBER
 
 
 @gin.configurable()

@@ -4,7 +4,7 @@ from typing import Callable, Optional
 import gin
 import tensorflow as tf
 
-from constants import FEATURES_NUMBER
+from src.constants import FEATURES_NUMBER
 
 
 @gin.configurable
