@@ -19,3 +19,4 @@ run_experiment.epochs = 100
 run_experiment.tensorboard_logs_name = %exp_name
 run_experiment.results_file = "data/model_results.csv"
 run_experiment.exp_name = %exp_name
+run_experiment.exp_comments = "Default model for baseline metrics"
