@@ -5,3 +5,8 @@
 get_dataset.n_samples = 10000
 get_dataset.train_test_split = 0.7
 
+# Base model
+get_model.add_exp_layer = None
+get_model.optimizer = 'adam'
+get_model.loss = 'mse'
+get_model.metrics = ['accuracy']
