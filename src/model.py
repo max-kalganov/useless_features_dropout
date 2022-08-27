@@ -8,8 +8,8 @@ from src.constants import FEATURES_NUMBER
 
 
 @gin.configurable
-def get_model(add_exp_layer: Optional[Callable], optimizer, loss, metrics) -> tf.keras.models.Model:
-    tf.random.set_seed(0)
+def get_model(add_exp_layer: Optional[Callable], optimizer, loss, metrics, seed) -> tf.keras.models.Model:
+    tf.random.set_seed(seed)
     x_input = tf.keras.layers.Input((FEATURES_NUMBER,))
 
     if add_exp_layer is not None:
