@@ -1,0 +1,7 @@
+# Experiment config
+
+
+# Dataset
+get_dataset.n_samples = 10000
+get_dataset.train_test_split = 0.7
+
