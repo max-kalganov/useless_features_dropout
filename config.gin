@@ -1,5 +1,4 @@
-# Experiment config
-
+# Experiment configurations
 
 # Dataset
 get_dataset.n_samples = 10000
@@ -10,3 +9,11 @@ get_model.add_exp_layer = None
 get_model.optimizer = 'adam'
 get_model.loss = 'mse'
 get_model.metrics = ['accuracy']
+
+# Experiment
+exp_name = ''
+run_experiment.batch_size = 1000
+run_experiment.epochs = 100
+run_experiment.tensorboard_logs = data/logs/ + %exp_name
+run_experiment.results_file = data/model_results.csv
+run_experiment.exp_name = %exp_name
