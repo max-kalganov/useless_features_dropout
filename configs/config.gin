@@ -24,22 +24,22 @@ running_dropout_configuration = @corr_5/experts_dropout
 # Dataset
 get_dataset.n_samples = 10000
 get_dataset.train_test_split = 0.7
-get_dataset.seed = 0
+get_dataset.seed = 100
 
 # Base model
-get_model.add_exp_layer = None #%running_dropout_configuration
+get_model.add_exp_layer = %running_dropout_configuration
 get_model.optimizer = 'adam'
 get_model.loss = 'mse'
 get_model.metrics = ['accuracy']
-get_model.seed = 0
-get_model.load_model_checkpoint = 'corr_5_experts_dropout_last'
+get_model.seed = 100
+get_model.load_model_checkpoint = None # 'corr_5_experts_dropout_last'
 
 # Experiment
-exp_name = 'no dropout over pretrained corr_5_experts_dropout'
+exp_name = 'corr_5_experts_dropout - seed 100'
 run_experiment.batch_size = 1000
 run_experiment.epochs = 1000
 run_experiment.tensorboard_logs_name = %exp_name
 run_experiment.results_file = "data/model_results.csv"
 run_experiment.exp_name = %exp_name
-run_experiment.exp_comments = "Pretrained model experiments no dropout over - corr 5"
+run_experiment.exp_comments = "corr_5/experts_dropout with seed 100"
 run_experiment.save_model_checkpoint = %exp_name

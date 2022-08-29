@@ -12,8 +12,33 @@ than the others?
 
 Attention? Additional weights? ... 
 
+### Conclusion
+Experiment results didn't show any significant metrics improvements,
+but there is still a field for further experiments. Like trying to
+change weights along with make features 0, etc.
+
+
 ### Results
-TBU
+Loss metric results looks pretty similar:
+![](data/images/all_graphs.png)
+
+Best results were gained by 
+- base model without any dropout
+- dropout 0.1
+- custom experts dropout with feature scores 
+  `[1., 1., 1.0, 0.7, 0.7]`
+
+![](data/images/best_graphs.png)
+
+Using custom dropout didn't improve results using it as a pretraining layer also.
+Best loss values on validation dataset: 
+- `3.627` - base model trained for 2000 epochs
+- `3.373` - custom dropout used, model trained for 2000 epochs
+- `3.378` - pretraining on custom dropout for 1000 epochs; finetuning as base model without custom dropout for 1000 epochs more
+
+_P.S. Similar results for different seed values._
+
+
 
 ### Solution proposed
 **Drop out!** :) 
