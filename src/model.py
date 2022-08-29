@@ -10,7 +10,7 @@ from src.constants import FEATURES_NUMBER, COMMON_DTYPE
 @gin.configurable
 def get_model(add_exp_layer: Optional[Callable], optimizer, loss, metrics, seed) -> tf.keras.models.Model:
     tf.random.set_seed(seed)
-    x_input = tf.keras.layers.InputLayer((FEATURES_NUMBER,), dtype=COMMON_DTYPE)
+    x_input = tf.keras.layers.Input((FEATURES_NUMBER,), dtype=COMMON_DTYPE)
 
     if add_exp_layer is not None:
         x = add_exp_layer(x_input)
@@ -23,4 +23,5 @@ def get_model(add_exp_layer: Optional[Callable], optimizer, loss, metrics, seed)
 
     model = tf.keras.models.Model(inputs=[x_input], outputs=[x])
     model.compile(optimizer=optimizer, loss=loss, metrics=metrics)
+    print(model.summary())
     return model

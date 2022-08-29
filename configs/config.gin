@@ -1,22 +1,40 @@
 # Experiment configurations
 
+# DropOut configurations
+dropout_0_1/regular_dropout.prob = 0.1
+dropout_0_3/regular_dropout.prob = 0.3
+dropout_0_5/regular_dropout.prob = 0.5
+dropout_0_9/regular_dropout.prob = 0.9
+
+corr_1/experts_dropout.features_scores = [1.0, 1.0, 1.0, 0.0, 0.0]
+corr_2/experts_dropout.features_scores = [1.0, 1.0, 0.5, 0.0, 0.0]
+corr_3/experts_dropout.features_scores = [0.8, 0.8, 0.3, 0.05, 0.05]
+
+incorr_1/experts_dropout.features_scores = [0.0, 0.0, 0.0, 1.0, 1.0]
+incorr_2/experts_dropout.features_scores = [0.0, 1.0, 0.5, 0.0, 0.0]
+incorr_3/experts_dropout.features_scores = [1.0, 1.0, 0.0, 0.0, 0.0]
+incorr_4/experts_dropout.features_scores = [0.0, 1.0, 0.5, 1.0, 0.0]
+incorr_5/experts_dropout.features_scores = [0.0, 0.0, 0.5, 1.0, 1.0]
+
+running_dropout_configuration = @corr_2/experts_dropout
+
 # Dataset
 get_dataset.n_samples = 10000
 get_dataset.train_test_split = 0.7
 get_dataset.seed = 0
 
 # Base model
-get_model.add_exp_layer = None
+get_model.add_exp_layer = %running_dropout_configuration
 get_model.optimizer = 'adam'
 get_model.loss = 'mse'
 get_model.metrics = ['accuracy']
 get_model.seed = 0
 
 # Experiment
-exp_name = 'no_dropout'
+exp_name = 'corr_2_experts_dropout'
 run_experiment.batch_size = 1000
-run_experiment.epochs = 100
+run_experiment.epochs = 1000
 run_experiment.tensorboard_logs_name = %exp_name
 run_experiment.results_file = "data/model_results.csv"
 run_experiment.exp_name = %exp_name
-run_experiment.exp_comments = "Default model for baseline metrics"
+run_experiment.exp_comments = "Default model with custom experts dropout for passing feature scores"

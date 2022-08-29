@@ -41,7 +41,7 @@ Dataset features description:
 ### Experiments configurations
 Common configurations: 
 - batch_size = 1000
-- epochs = 100
+- epochs = 1000
 
 Experiments:
 1. No custom dropout
