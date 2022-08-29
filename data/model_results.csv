@@ -1,0 +1,23 @@
+exp_name,exp_loss,exp_acc,exp_comments
+no_dropout,3.627188444137573,0.0,Default model for baseline metrics
+dropout_0_1,23.47492218017578,0.0,Default model for baseline metrics with regular dropout
+dropout_0_3,96.57379150390624,0.0,Default model for baseline metrics with regular dropout
+dropout_0_5,192.4317626953125,0.0,Default model for baseline metrics with regular dropout
+dropout_0_9,257.3048400878906,0.0,Default model for baseline metrics with regular dropout
+incorr_1_experts_dropout,185.540267944336,0.0,Default model with custom experts dropout for passing feature scores
+incorr_5_experts_dropout,182.1302490234375,0.0,Default model with custom experts dropout for passing feature scores
+incorr_4_experts_dropout,138.01719665527344,0.0,Default model with custom experts dropout for passing feature scores
+incorr_2_experts_dropout,134.4987335205078,0.0,Default model with custom experts dropout for passing feature scores
+incorr_3_experts_dropout,11.283778190612791,0.0,Default model with custom experts dropout for passing feature scores
+corr_3_experts_dropout,20.908578872680664,0.0,Default model with custom experts dropout for passing feature scores
+corr_1_experts_dropout,14.188813209533691,0.0,Default model with custom experts dropout for passing feature scores
+corr_2_experts_dropout,13.80699634552002,0.0,Default model with custom experts dropout for passing feature scores
+corr_4_experts_dropout,3.4160406589508057,0.0,Default model with custom experts dropout for passing feature scores
+corr_5_experts_dropout,3.4178946018218994,0.0,Default model with custom experts dropout for passing feature scores
+corr_5_experts_dropout_last,3.4178946018218994,0.0,Default model with custom experts dropout for passing feature scores
+no dropout 2000 epochs,3.6276464462280273,0.0,no dropout - 2000 epochs
+corr_5_experts_dropout_last 2000 epochs,3.3735885620117188,0.0,corr_5_experts_dropout_last - 2000 epochs
+no dropout over pretrained corr_5_experts_dropout,3.378859281539917,0.0,no dropout over pretrained corr_5_experts_dropout_last
+no dropout - seed 1,3.627188444137573,0.0,no dropout with seed 1
+corr_5_experts_dropout - seed 1,3.4178946018218994,0.0,corr_5/experts_dropout with seed 1
+corr_5_experts_dropout - seed 100,3.4178946018218994,0.0,corr_5/experts_dropout with seed 100
