@@ -4,6 +4,7 @@ import tensorflow as tf
 
 FEATURES_NUMBER = 5
 TENSORBOARD_LOGS_DIR = "data/logs"
+MODEL_CHECKPOINTS_DIR = "data/checkpoints"
 COMMON_DTYPE = tf.float32
 
 # Dump results col names

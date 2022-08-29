@@ -16,9 +16,9 @@ class ExpertsDropout(tf.keras.layers.Layer):
 
     def call(self, inputs, training=False):
         result = inputs
-        if training:
+        if training and inputs.shape[0] is not None:
             prob = tf.random.uniform(shape=inputs.shape, minval=0, maxval=1, dtype=COMMON_DTYPE)
-            result = tf.where(prob < self.features_scores, inputs, 0.)
+            result = tf.where(prob <= self.features_scores, inputs, 0.)
         return result
 
 

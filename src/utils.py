@@ -1,6 +1,6 @@
 """Utils"""
 import os
-from typing import List
+from typing import List, Optional
 
 from src.dataset_generator import get_dataset
 from src.model import get_model
@@ -13,7 +13,8 @@ def get_single_experiment_results(
         batch_size: int,
         epochs: int,
         tensorboard_logs: str,
-        seed: int
+        seed: int,
+        save_model_checkpoint: Optional[str] = None
 ) -> List[float]:
     x_train, y_train, x_test, y_test = get_dataset(seed=seed)
     model = get_model(seed=seed)
@@ -27,6 +28,8 @@ def get_single_experiment_results(
                   keras.callbacks.TensorBoard(log_dir=tensorboard_logs)
               ])
 
+    if save_model_checkpoint is not None:
+        model.save(save_model_checkpoint)
     return model.evaluate(x_test, y_test)
 
 
