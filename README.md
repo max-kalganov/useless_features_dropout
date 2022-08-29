@@ -20,9 +20,9 @@ TBU
 
 This repo contains an implementation of the ***Custom Dropout layer*** (CDL)
 which can be used as a filter for input features based on the expert's 'importance'
-metrics.
+scores.
 
-For each input feature has to be defined 'importance' metric based on the expert
+For each input feature has to be defined 'importance' score based on the expert
 opinion as a value from 0 to 1, where 
 
 - 1 is **the most valuable feature**
