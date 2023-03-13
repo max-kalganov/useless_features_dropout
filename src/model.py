@@ -42,3 +42,33 @@ def get_model(
 
     print(model.summary())
     return model
+
+
+@gin.configurable
+def get_model_mnist(
+        add_exp_layer: Optional[Callable],
+        optimizer,
+        loss,
+        metrics,
+        seed: int,
+        num_of_input_features: int
+) -> tf.keras.models.Model:
+    tf.random.set_seed(seed)
+    x_input = tf.keras.layers.Input((num_of_input_features,), dtype=COMMON_DTYPE)
+
+    if add_exp_layer is not None:
+        x = add_exp_layer(x_input)
+    else:
+        x = x_input
+
+    x = tf.keras.layers.Dense(num_of_input_features*2, activation='relu')(x)
+    x = tf.keras.layers.Dense(num_of_input_features, activation='relu')(x)
+    x = tf.keras.layers.Dense(num_of_input_features//2, activation='relu')(x)
+    x = tf.keras.layers.Dense(num_of_input_features//4, activation='relu')(x)
+    x = tf.keras.layers.Dense(10)(x)
+
+    model = tf.keras.models.Model(inputs=[x_input], outputs=[x])
+    model.compile(optimizer=optimizer, loss=loss, metrics=metrics)
+
+    print(model.summary())
+    return model
