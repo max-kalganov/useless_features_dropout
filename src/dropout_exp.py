@@ -54,10 +54,14 @@ def permutation_fi_dropout(x_input,
         return loaded_model
 
     def aggregate_data():
-        array = np.vstack(tfds.as_numpy(ds_train[0]))
-        x_train = np.array(list(map(lambda x: x[0], array)))
-        y_train = np.array(list(map(lambda x: x[1], array)))
-        return x_train, y_train
+        x_arrays, labels = [], []
+        for x, y in tfds.as_numpy(ds_train):
+            x_arrays.append(x)
+            labels.append(y)
+
+        x = np.concatenate(x_arrays, axis=0)
+        y = np.concatenate(labels, axis=0)
+        return x, y
 
     def get_features_scores(feature_importance):
         if num_of_top_imp_features_to_leave:
