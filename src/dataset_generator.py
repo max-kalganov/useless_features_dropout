@@ -9,7 +9,7 @@ import tensorflow_datasets as tfds
 import tensorflow as tf
 
 
-@gin.configurable()
+@gin.configurable
 def get_dataset(
         n_samples: int,
         train_test_split: float,
@@ -23,6 +23,7 @@ def get_dataset(
     return x[:split, :], y[:split], x[split:, :], y[split:]
 
 
+@gin.configurable
 def get_mnist_dataset() -> Tuple[tf.data.Dataset, tf.data.Dataset]:
     def normalize_img(image, label):
         """Normalizes images: `uint8` -> `float32`."""
