@@ -61,6 +61,7 @@ def get_model_mnist(
     else:
         x = x_input
 
+    x = tf.keras.layers.Dense(num_of_input_features, activation='relu')(x)
     x = tf.keras.layers.Dense(num_of_input_features*2, activation='relu')(x)
     x = tf.keras.layers.Dense(num_of_input_features*4, activation='relu')(x)
     x = tf.keras.layers.Dense(num_of_input_features*8, activation='relu')(x)
