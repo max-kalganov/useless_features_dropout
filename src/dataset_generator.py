@@ -1,5 +1,5 @@
 """Dataset generator implementation"""
-from typing import Tuple
+from typing import Tuple, Optional
 
 import gin
 import numpy as np
@@ -27,24 +27,31 @@ def get_dataset(
 
 
 @gin.configurable
-def get_mnist_dataset() -> Tuple[tf.data.Dataset, tf.data.Dataset]:
+def get_mnist_dataset(feature_importance_threshold: Optional[float] = None, seed: int = 0) -> Tuple[tf.data.Dataset, tf.data.Dataset]:
     def normalize_img(image, label):
         """Normalizes images: `uint8` -> `float32`."""
         return tf.cast(image, tf.float32) / 255., label
 
     def reshape_img(image, label):
         """Flatten image"""
-        return tf.reshape(image, (-1,)), label
+        return tf.reshape(image, (-1,)), tf.one_hot(label, 10)
+
+    def filter_features(image, label):
+        """Filter out not important features"""
+        return image, label
 
     def process_dataset(dataset, is_train: bool):
         dataset = dataset.map(
             normalize_img, num_parallel_calls=tf.data.AUTOTUNE)
         dataset = dataset.map(
             reshape_img, num_parallel_calls=tf.data.AUTOTUNE)
+        if feature_importance_threshold is not None:
+            dataset = dataset.map(
+                filter_features, num_parallel_calls=tf.data.AUTOTUNE)
+
         dataset = dataset.cache()
         if is_train:
-            dataset = dataset.shuffle(ds_info.splits['train'].num_examples)
-        dataset = dataset.batch(128)
+            dataset = dataset.shuffle(ds_info.splits['train'].num_examples, seed=seed)
         dataset = dataset.prefetch(tf.data.AUTOTUNE)
         return dataset
 
