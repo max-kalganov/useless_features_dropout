@@ -35,11 +35,15 @@ get_model.seed = 100
 get_model.load_model_checkpoint = None # 'corr_5_experts_dropout_last'
 
 # Experiment
-exp_name = 'corr_5_experts_dropout - seed 100'
-run_experiment.batch_size = 1000
-run_experiment.epochs = 1000
-run_experiment.tensorboard_logs_name = %exp_name
-run_experiment.results_file = "data/model_results.csv"
-run_experiment.exp_name = %exp_name
-run_experiment.exp_comments = "corr_5/experts_dropout with seed 100"
-run_experiment.save_model_checkpoint = %exp_name
+exp_name = 'testing new experiment runner'
+
+ExperimentsRunner.get_dataset_callback = @get_dataset
+ExperimentsRunner.get_model_callback = @get_model
+ExperimentsRunner.batch_size = 100
+ExperimentsRunner.epochs = 10
+ExperimentsRunner.steps_per_epoch = None
+ExperimentsRunner.tensorboard_logs_name = %exp_name
+ExperimentsRunner.results_file = "data/temp_model_results.csv"
+ExperimentsRunner.exp_name = %exp_name
+ExperimentsRunner.exp_comments = "testing new experiment runner"
+ExperimentsRunner.save_model_checkpoint = %exp_name

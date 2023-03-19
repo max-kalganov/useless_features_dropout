@@ -6,6 +6,8 @@ import gin
 from src import constants as ct
 import pandas as pd
 import tensorflow as tf
+import logging
+exp_logger = logging.getLogger('Experiment Logger')
 
 
 @gin.configurable()
@@ -16,6 +18,7 @@ class ExperimentsRunner:
             get_model_callback: Callable,
             batch_size: int,
             epochs: int,
+            steps_per_epoch: int,
             tensorboard_logs_name: str,
             results_file: str,
             exp_name: str,
@@ -26,6 +29,7 @@ class ExperimentsRunner:
         self.get_model_fnc = get_model_callback
         self.batch_size = batch_size
         self.epochs = epochs
+        self.steps_per_epoch = steps_per_epoch
         self.tensorboard_logs_name = tensorboard_logs_name
         self.results_file = results_file
         self.exp_name = exp_name
@@ -49,11 +53,16 @@ class ExperimentsRunner:
             save_model_checkpoint: Optional[str] = None
     ) -> List[float]:
         train_dataset, test_dataset = self.get_dataset_fnc(seed=seed)
+        train_dataset = train_dataset.batch(self.batch_size)
+        test_dataset = test_dataset.batch(len(test_dataset))
+        exp_logger.info(f'Extracted dataset: train - {train_dataset}, test - {test_dataset}')
+
         model = self.get_model_fnc(seed=seed)
+        exp_logger.info(f'Extracted model: {model}')
 
         model.fit(train_dataset,
-                  batch_size=self.batch_size,
                   epochs=self.epochs,
+                  steps_per_epoch=self.steps_per_epoch,
                   validation_data=test_dataset,
                   callbacks=[
                       tf.keras.callbacks.TensorBoard(log_dir=tensorboard_logs)
@@ -61,6 +70,7 @@ class ExperimentsRunner:
 
         if save_model_checkpoint is not None:
             model.save(save_model_checkpoint)
+            exp_logger.info(f'Model is saved into {save_model_checkpoint}')
         return model.evaluate(test_dataset)
 
     def dump_results(self, model_results: List[float]):
