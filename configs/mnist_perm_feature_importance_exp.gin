@@ -1,0 +1,51 @@
+# Experiment configurations
+
+# exp 1 - no dropout
+
+# exp 2 - regular dropout
+
+# exp 3 - remove some parameters using permutation importance
+# exp 3.1 - 95%
+# exp 3.2 - 90%
+# exp 3.3 - 50%
+
+# exp 4 - use dropout based on permutation importance
+# exp 4.1 - all
+# exp 4.2 - the most valuable
+# exp 4.3 - several
+
+
+permutation_fi_dropout.dumped_model_name = ''
+permutation_fi_dropout.ds_train = %get_mnist_dataset
+permutation_fi_dropout.num_of_top_imp_features_to_leave = None
+
+running_dropout_configuration = None # @corr_5/experts_dropout
+
+# Dataset configs
+get_mnist_dataset.feature_importance_threshold = None
+
+# Model configs
+CategoricalCrossentropy.from_logits = True
+
+get_model_mnist.add_exp_layer = %running_dropout_configuration
+get_model_mnist.optimizer = 'adam'
+get_model_mnist.loss = @CategoricalCrossentropy()
+get_model_mnist.metrics = ['accuracy']
+get_model_mnist.seed = 100
+get_model_mnist.num_of_input_features = 784
+
+# Experiment
+exp_name = 'exp1_no_dropout_v3'
+results_file = 'data/exp1_model_results.csv'
+exp_comments = 'no dropout model | 1000 bs, 100 epochs | big model'
+
+ExperimentsRunner.get_dataset_callback = @get_mnist_dataset
+ExperimentsRunner.get_model_callback = @get_model_mnist
+ExperimentsRunner.batch_size = 1000
+ExperimentsRunner.epochs = 100
+ExperimentsRunner.steps_per_epoch = None
+ExperimentsRunner.tensorboard_logs_name = %exp_name
+ExperimentsRunner.results_file = %results_file
+ExperimentsRunner.exp_name = %exp_name
+ExperimentsRunner.exp_comments = %exp_comments
+ExperimentsRunner.save_model_checkpoint = %exp_name
