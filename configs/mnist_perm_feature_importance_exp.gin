@@ -1,8 +1,15 @@
 # Experiment configurations
 
-# exp 1 - no dropout
+# exp 1 - no dropout - exp1_no_dropout_v3 model
 
 # exp 2 - regular dropout
+# exp 2.1 - 0.3
+# exp 2.2 - 0.5
+# exp 2.3 - 0.7
+
+exp2_1/regular_dropout.prob = 0.3
+exp2_2/regular_dropout.prob = 0.5
+exp2_3/regular_dropout.prob = 0.7
 
 # exp 3 - remove some parameters using permutation importance
 # exp 3.1 - 95%
@@ -19,7 +26,7 @@ permutation_fi_dropout.dumped_model_name = ''
 permutation_fi_dropout.ds_train = %get_mnist_dataset
 permutation_fi_dropout.num_of_top_imp_features_to_leave = None
 
-running_dropout_configuration = None # @corr_5/experts_dropout
+running_dropout_configuration = @exp2_1/regular_dropout
 
 # Dataset configs
 get_mnist_dataset.feature_importance_threshold = None
@@ -35,9 +42,9 @@ get_model_mnist.seed = 100
 get_model_mnist.num_of_input_features = 784
 
 # Experiment
-exp_name = 'exp1_no_dropout_v3'
-results_file = 'data/exp1_model_results.csv'
-exp_comments = 'no dropout model | 1000 bs, 100 epochs | big model'
+exp_name = 'exp2.1_regular_dropout'
+results_file = 'data/exp2.1_model_results.csv'
+exp_comments = 'dropout model 0.3 | 1000 bs, 100 epochs | big model'
 
 ExperimentsRunner.get_dataset_callback = @get_mnist_dataset
 ExperimentsRunner.get_model_callback = @get_model_mnist
