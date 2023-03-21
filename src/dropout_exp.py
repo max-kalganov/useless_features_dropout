@@ -37,46 +37,6 @@ def experts_dropout(x_input, features_scores):
 
 
 @gin.configurable
-def get_feature_importance(model, x, y, n_repeats=30, seed=0):
-    r = permutation_importance(model, x, y, n_repeats=n_repeats, random_state=seed)
-    return r.importances_mean
-
-
-@gin.configurable()
-def permutation_fi_dropout(x_input,
-                           dumped_model_name: str,
-                           ds_train,
-                           num_of_top_imp_features_to_leave: Optional[int] = None):
-    """Setting up dropout based on permutation feature importance"""
-    def load_model():
-        load_model_checkpoint = os.path.join(MODEL_CHECKPOINTS_DIR, dumped_model_name)
-        loaded_model = tf.keras.models.load_model(load_model_checkpoint)
-        return loaded_model
-
-    def aggregate_data():
-        x_arrays, labels = [], []
-        for x, y in tfds.as_numpy(ds_train):
-            x_arrays.append(x)
-            labels.append(y)
-
-        x = np.concatenate(x_arrays, axis=0)
-        y = np.concatenate(labels, axis=0)
-        return x, y
-
-    def get_features_scores(feature_importance):
-        if num_of_top_imp_features_to_leave:
-            highest_score_to_select = feature_importance.argsort()[::-1][num_of_top_imp_features_to_leave - 1]
-        else:
-            highest_score_to_select = 0
-        feature_importance[feature_importance < highest_score_to_select] = 0
-        feature_importance = 1 - feature_importance
-        return feature_importance
-
-    x, y = aggregate_data()
-    fi = get_feature_importance(
-        model=load_model(),
-        x=x,
-        y=y
-    )
-
-    return ExpertsDropout(get_features_scores(fi))(x_input)
+def feature_importance_dropout(x_input, features_importance_file: str) -> ExpertsDropout:
+    features_importance = np.load(features_importance_file)
+    return ExpertsDropout(features_importance)(x_input)
