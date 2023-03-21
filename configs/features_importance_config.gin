@@ -1,6 +1,17 @@
 get_feature_importance.n_repeats = 30
 
-permutation_fi_dropout.dumped_model_name = 'exp1_no_dropout_v3'
-permutation_fi_dropout.num_of_top_imp_features_to_leave = None
+all/feature_selection_method = 'all'
+all/features_importance_file = 'data/feature_importance/exp1_v3_all.np'
 
-dump_features_importance(features_importance_file
+top_1/feature_selection_method = 'top_1'
+top_1/features_importance_file = 'data/feature_importance/exp1_v3_top_1.np'
+
+top_3/feature_selection_method = 'top_3'
+top_3/features_importance_file = 'data/feature_importance/exp1_v3_top_3.np'
+
+by_stats/feature_selection_method = 'by_stats'
+by_stats/features_importance_file = 'data/feature_importance/exp1_v3_by_stats.np'
+
+permutation_fi_scores.dumped_model_name = 'exp1_no_dropout_v3'
+permutation_fi_scores.feature_selection_method = %all/feature_selection_method
+dump_features_importance.features_importance_file = %all/features_importance_file

@@ -17,7 +17,7 @@ class FeatureSelectionMethods:
             'all': lambda mean, std: np.arange(0, len(mean)),
             'top_1': partial(self._select_by_num, num_of_top_imp_features_to_leave=1),
             'top_3': partial(self._select_by_num, num_of_top_imp_features_to_leave=3),
-            'by_stats': ...
+            'by_stats': self._select_by_stats
         }
         self.selected_method = names_to_methods[method]
 
@@ -37,7 +37,7 @@ class FeatureSelectionMethods:
 
 @gin.configurable
 def get_feature_importance(model, x, y, n_repeats=30, seed=0) -> Tuple[np.ndarray, np.ndarray]:
-    r = permutation_importance(model, x, y, n_repeats=n_repeats, random_state=seed)
+    r = permutation_importance(model, x, y, n_repeats=n_repeats, random_state=seed, scoring='r2')
     return r.importances_mean, r.importances_std
 
 
@@ -58,8 +58,8 @@ def permutation_fi_scores(dumped_model_name: str,
             x_arrays.append(x)
             labels.append(y)
 
-        x = np.concatenate(x_arrays, axis=0)
-        y = np.concatenate(labels, axis=0)
+        x = np.vstack(x_arrays)
+        y = np.vstack(labels)
         return x, y
 
     def get_features_scores(feature_importance: np.ndarray, args_to_leave: np.ndarray) -> np.ndarray:
