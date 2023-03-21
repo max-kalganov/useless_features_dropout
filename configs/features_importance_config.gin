@@ -1,0 +1,6 @@
+get_feature_importance.n_repeats = 30
+
+permutation_fi_dropout.dumped_model_name = 'exp1_no_dropout_v3'
+permutation_fi_dropout.num_of_top_imp_features_to_leave = None
+
+dump_features_importance(features_importance_file
