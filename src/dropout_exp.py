@@ -38,7 +38,9 @@ def regular_dropout(x_input, prob):
 
 @gin.configurable()
 def experts_dropout(x_input, features_scores):
-    return ExpertsDropout(features_scores)(x_input)
+    # make features score to be 1 if it has to be dropped out
+    features_dropout_probs = 1. - np.array(features_scores)
+    return ExpertsDropout(features_dropout_probs)(x_input)
 
 
 @gin.configurable
