@@ -1,17 +1,22 @@
 """Implementations of custom and regular dropouts to be used on model"""
-import os
-from typing import List, Union, Optional
+from typing import List, Union
 
 import gin
 import numpy as np
 import tensorflow as tf
-import tensorflow_datasets as tfds
-from sklearn.inspection import permutation_importance
 
-from src.constants import COMMON_DTYPE, MODEL_CHECKPOINTS_DIR
+from src.constants import COMMON_DTYPE
 
 
 class ExpertsDropout(tf.keras.layers.Layer):
+    """Drops out input values individually by features scores for each input feature.
+
+    `DrouOut feature i with the prob {feature_score[i]}`
+
+    feature_score == 0 -> feature is always passed forward
+    feature_score == 1 -> feature is almost never passed forward (replaced with 0)
+    """
+
     def __init__(self, features_scores: Union[List[float], np.ndarray]):
         super().__init__()
         assert all(0 <= imp <= 1 for imp in features_scores), "incorrect feature importance is set"
@@ -22,7 +27,7 @@ class ExpertsDropout(tf.keras.layers.Layer):
         result = inputs
         if training and inputs.shape[0] is not None:
             prob = tf.random.uniform(shape=inputs.shape, minval=0, maxval=1, dtype=COMMON_DTYPE)
-            result = tf.where(prob <= self.features_scores, inputs, 0.)
+            result = tf.where(self.features_scores <= prob, inputs, 0.)
         return result
 
 
