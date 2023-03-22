@@ -22,11 +22,7 @@ exp2_3/regular_dropout.prob = 0.7
 # exp 4.3 - several
 
 
-permutation_fi_dropout.dumped_model_name = ''
-permutation_fi_dropout.ds_train = %get_mnist_dataset
-permutation_fi_dropout.num_of_top_imp_features_to_leave = None
-
-running_dropout_configuration = @exp2_1/regular_dropout
+running_dropout_configuration = @exp2_3/regular_dropout
 
 # Dataset configs
 get_mnist_dataset.feature_importance_threshold = None
@@ -42,9 +38,9 @@ get_model_mnist.seed = 100
 get_model_mnist.num_of_input_features = 784
 
 # Experiment
-exp_name = 'exp2.1_regular_dropout'
-results_file = 'data/exp2.1_model_results.csv'
-exp_comments = 'dropout model 0.3 | 1000 bs, 100 epochs | big model'
+exp_name = 'exp2.3_regular_dropout'
+results_file = 'data/exp2.3_model_results.csv'
+exp_comments = 'dropout model 0.7 | 1000 bs, 100 epochs | big model'
 
 ExperimentsRunner.get_dataset_callback = @get_mnist_dataset
 ExperimentsRunner.get_model_callback = @get_model_mnist
