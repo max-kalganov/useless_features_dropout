@@ -1,6 +1,8 @@
+include "configs/features_importance_config.gin"
+
 # Experiment configurations
 
-# exp 1 - no dropout - exp1_no_dropout_v3 model
+# exp 1 - no dropout - heart_attack_exp1_no_dropout model
 
 # exp 2 - regular dropout
 # exp 2.1 - 0.3
@@ -12,20 +14,27 @@ exp2_2/regular_dropout.prob = 0.5
 exp2_3/regular_dropout.prob = 0.7
 
 # exp 3 - remove some parameters using permutation importance
-# exp 3.1 - 95%
-# exp 3.2 - 90%
-# exp 3.3 - 50%
+# exp 3.1 - leave top 1 args
+# exp 3.2 - leave top 3 args
+# exp 3.3 - leave args by stats
 
 # exp 4 - use dropout based on permutation importance
 # exp 4.1 - all
-# exp 4.2 - the most valuable
-# exp 4.3 - several
+# exp 4.2 - top 1
+# exp 4.3 - top 3
+# exp 4.4 - by stats
 
 
-running_dropout_configuration = None # @exp2_3/regular_dropout
+all/feature_importance_dropout.features_importance_dir = %all/features_importance_dir
+top_1/feature_importance_dropout.features_importance_dir = %top_1/features_importance_dir
+top_3/feature_importance_dropout.features_importance_dir = %top_3/features_importance_dir
+by_stats/feature_importance_dropout.features_importance_dir = %by_stats/features_importance_dir
+
+
+running_dropout_configuration = @by_stats/feature_importance_dropout
 
 # Dataset configs
-get_heart_attack_dataset.features_to_leave = None
+get_heart_attack_dataset.features_importance_dir = None # %by_stats/features_importance_dir
 
 # Model configs
 BinaryCrossentropy.from_logits = True
@@ -37,9 +46,9 @@ get_bin_model.metrics = ['binary_accuracy']
 get_bin_model.seed = 100
 
 # Experiment
-exp_name = 'heart_attack_exp1_no_dropout'
-results_file = 'data/heart_attack/exp1_model_results.csv'
-exp_comments = 'no dropout | 1000 bs, 100 epochs | big model'
+exp_name = 'heart_attack_exp4.4'
+results_file = 'data/heart_attack/exp4.4_model_results.csv'
+exp_comments = 'by_stats features importance drop out'
 
 ExperimentsRunner.get_dataset_callback = @get_heart_attack_dataset
 ExperimentsRunner.get_model_callback = @get_bin_model
@@ -51,3 +60,4 @@ ExperimentsRunner.results_file = %results_file
 ExperimentsRunner.exp_name = %exp_name
 ExperimentsRunner.exp_comments = %exp_comments
 ExperimentsRunner.save_model_checkpoint = %exp_name
+ExperimentsRunner.num_of_intermediate_nodes = 13
