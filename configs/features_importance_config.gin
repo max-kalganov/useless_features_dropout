@@ -1,17 +1,16 @@
-get_feature_importance.n_repeats = 30
-
 all/feature_selection_method = 'all'
-all/features_importance_file = 'data/feature_importance/exp1_v3_all.np'
+all/features_importance_dir = 'data/feature_importance_all'
 
 top_1/feature_selection_method = 'top_1'
-top_1/features_importance_file = 'data/feature_importance/exp1_v3_top_1.np'
+top_1/features_importance_dir = 'data/feature_importance_top_1'
 
 top_3/feature_selection_method = 'top_3'
-top_3/features_importance_file = 'data/feature_importance/exp1_v3_top_3.np'
+top_3/features_importance_dir = 'data/feature_importance_top_3'
 
 by_stats/feature_selection_method = 'by_stats'
-by_stats/features_importance_file = 'data/feature_importance/exp1_v3_by_stats.np'
+by_stats/features_importance_dir = 'data/feature_importance_by_stats'
 
-permutation_fi_scores.dumped_model_name = 'exp1_no_dropout_v3'
-permutation_fi_scores.feature_selection_method = %all/feature_selection_method
-dump_features_importance.features_importance_file = %all/features_importance_file
+get_feature_importance.n_repeats = 30
+permutation_fi_scores.dumped_model_name = 'heart_attack_exp1_no_dropout'
+permutation_fi_scores.feature_selection_method = %by_stats/feature_selection_method
+dump_features_importance.features_importance_dir = %by_stats/features_importance_dir

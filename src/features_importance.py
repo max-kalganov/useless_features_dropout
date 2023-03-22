@@ -4,6 +4,7 @@ from typing import Optional, Tuple
 
 import gin
 import numpy as np
+import sklearn.metrics
 import tensorflow as tf
 import tensorflow_datasets as tfds
 from sklearn.inspection import permutation_importance
@@ -32,19 +33,27 @@ class FeatureSelectionMethods:
     @staticmethod
     def _select_by_stats(feature_importance_mean: np.ndarray, feature_importance_std: np.ndarray):
         features_filter = feature_importance_mean - 2 * feature_importance_std
-        return np.argwhere(features_filter > 0)
+        return np.argwhere(features_filter > 0).reshape((-1,))
+
+
+def f1_score_from_predict_proba(model, x, y):
+    return sklearn.metrics.f1_score(y, model.predict(x) > 0.5)
 
 
 @gin.configurable
 def get_feature_importance(model, x, y, n_repeats=30, seed=0) -> Tuple[np.ndarray, np.ndarray]:
-    r = permutation_importance(model, x, y, n_repeats=n_repeats, random_state=seed, scoring='r2', max_samples=1.0)
+    r = permutation_importance(model, x, y,
+                               n_repeats=n_repeats,
+                               random_state=seed,
+                               scoring=f1_score_from_predict_proba,
+                               max_samples=1.0)
     return r.importances_mean, r.importances_std
 
 
 @gin.configurable()
 def permutation_fi_scores(dumped_model_name: str,
                           ds_train,
-                          feature_selection_method: str):
+                          feature_selection_method: str) -> Tuple[np.ndarray, np.ndarray]:
     """Setting up dropout based on permutation feature importance"""
 
     def load_model() -> tf.keras.models.Model:
@@ -79,4 +88,4 @@ def permutation_fi_scores(dumped_model_name: str,
     args_to_leave = feature_selection(fi_mean, fi_std)
     print(f"Args to leave: {args_to_leave}")
 
-    return get_features_scores(fi_mean, args_to_leave=args_to_leave)
+    return get_features_scores(fi_mean, args_to_leave=args_to_leave), args_to_leave
