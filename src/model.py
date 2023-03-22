@@ -86,7 +86,8 @@ def get_bin_model(
         loss,
         metrics,
         seed: int,
-        num_of_input_features: int
+        num_of_input_features: int,
+        num_of_intermediate_nodes: int
 ) -> tf.keras.models.Model:
     tf.random.set_seed(seed)
     x_input = tf.keras.layers.Input((num_of_input_features,), dtype=COMMON_DTYPE)
@@ -96,14 +97,14 @@ def get_bin_model(
     else:
         x = x_input
 
-    x = tf.keras.layers.Dense(num_of_input_features, activation='relu')(x)
-    x = tf.keras.layers.Dense(num_of_input_features*2, activation='relu')(x)
-    x = tf.keras.layers.Dense(num_of_input_features*4, activation='relu')(x)
-    x = tf.keras.layers.Dense(num_of_input_features*8, activation='relu')(x)
-    x = tf.keras.layers.Dense(num_of_input_features*4, activation='relu')(x)
-    x = tf.keras.layers.Dense(num_of_input_features*2, activation='relu')(x)
-    x = tf.keras.layers.Dense(num_of_input_features, activation='relu')(x)
-    x = tf.keras.layers.Dense(num_of_input_features // 2, activation='relu')(x)
+    x = tf.keras.layers.Dense(num_of_intermediate_nodes, activation='relu')(x)
+    x = tf.keras.layers.Dense(num_of_intermediate_nodes*2, activation='relu')(x)
+    x = tf.keras.layers.Dense(num_of_intermediate_nodes*4, activation='relu')(x)
+    x = tf.keras.layers.Dense(num_of_intermediate_nodes*8, activation='relu')(x)
+    x = tf.keras.layers.Dense(num_of_intermediate_nodes*4, activation='relu')(x)
+    x = tf.keras.layers.Dense(num_of_intermediate_nodes*2, activation='relu')(x)
+    x = tf.keras.layers.Dense(num_of_intermediate_nodes, activation='relu')(x)
+    x = tf.keras.layers.Dense(num_of_intermediate_nodes // 2, activation='relu')(x)
     x = tf.keras.layers.Dense(1)(x)
 
     model = tf.keras.models.Model(inputs=[x_input], outputs=[x])
