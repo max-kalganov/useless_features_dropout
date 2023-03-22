@@ -9,7 +9,8 @@
    - the most valuable
    - several 
 
-## The second experiment - kaggle Titanic
+## The second experiment - Credit card approval dataset
+[Link to dataset](https://www.kaggle.com/datasets/rikdifos/credit-card-approval-prediction?resource=download)
 ...
 
 ## The first experiment - flatten MNIST
