@@ -10,6 +10,8 @@ from src.constants import FEATURES_NUMBER, HEART_ATTACK_DATASET_PATH, HEART_ATTA
 import tensorflow_datasets as tfds
 import tensorflow as tf
 
+from src.utils import get_feature_importance_files
+
 
 @gin.configurable
 def get_dataset(
@@ -63,19 +65,21 @@ def get_mnist_dataset(seed: int = 0) -> Tuple[tf.data.Dataset, tf.data.Dataset]:
     return ds_train, ds_test
 
 
-def _get_heart_attack_x_y(features_to_leave: Optional[float] = None) -> Tuple[np.ndarray, np.ndarray]:
+def _get_heart_attack_x_y(features_importance_dir: Optional[str] = None) -> Tuple[np.ndarray, np.ndarray]:
     full_dataset = pd.read_csv(HEART_ATTACK_DATASET_PATH, index_col=False)
     y = full_dataset.pop(HEART_ATTACK_LABEL)
 
     x, y = full_dataset.values, y.values
-    if features_to_leave is not None:
-        x = x[features_to_leave]
+    if features_importance_dir is not None:
+        _, args_to_leave_file = get_feature_importance_files(features_importance_dir)
+        args_to_leave = np.load(args_to_leave_file)
+        x = x[:, args_to_leave]
     return x, y
 
 
 @gin.configurable
-def get_heart_attack_dataset(features_to_leave: Optional[float] = None, seed: int = 0):
-    x, y = _get_heart_attack_x_y(features_to_leave)
+def get_heart_attack_dataset(features_importance_dir: Optional[str] = None, seed: int = 0):
+    x, y = _get_heart_attack_x_y(features_importance_dir)
     x_train, x_test, y_train, y_test = train_test_split(x,
                                                         y,
                                                         test_size=0.25,
