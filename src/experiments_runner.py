@@ -53,13 +53,13 @@ class ExperimentsRunner:
             save_model_checkpoint: Optional[str] = None
     ) -> List[float]:
         train_dataset, test_dataset = self.get_dataset_fnc(seed=seed)
-        train_dataset = train_dataset.batch(self.batch_size)
+        input_shape = list(train_dataset.take(1).as_numpy_iterator())[0][0].shape
+
+        train_dataset = train_dataset.repeat().batch(self.batch_size)
         test_dataset = test_dataset.batch(len(test_dataset))
         exp_logger.info(f'Extracted dataset: train - {train_dataset}, test - {test_dataset}')
 
-        input_shape = list(train_dataset.take(1).as_numpy_iterator())[0][0].shape
-
-        model = self.get_model_fnc(num_of_input_features=input_shape, seed=seed)
+        model = self.get_model_fnc(num_of_input_features=input_shape[0], seed=seed)
         exp_logger.info(f'Extracted model: {model}')
 
         model.fit(train_dataset,
