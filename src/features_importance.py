@@ -37,7 +37,7 @@ class FeatureSelectionMethods:
 
 @gin.configurable
 def get_feature_importance(model, x, y, n_repeats=30, seed=0) -> Tuple[np.ndarray, np.ndarray]:
-    r = permutation_importance(model, x, y, n_repeats=n_repeats, random_state=seed, scoring='r2')
+    r = permutation_importance(model, x, y, n_repeats=n_repeats, random_state=seed, scoring='r2', max_samples=1.0)
     return r.importances_mean, r.importances_std
 
 
