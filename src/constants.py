@@ -12,3 +12,6 @@ EXPERIMENT_NAME = "exp_name"
 EXPERIMENT_LOSS = "exp_loss"
 EXPERIMENT_ACCURACY = "exp_acc"
 EXPERIMENT_COMMENTS = "exp_comments"
+
+HEART_ATTACK_DATASET_PATH = "data/heart_attack/heart.csv"
+HEART_ATTACK_LABEL = "output"
