@@ -57,7 +57,9 @@ class ExperimentsRunner:
         test_dataset = test_dataset.batch(len(test_dataset))
         exp_logger.info(f'Extracted dataset: train - {train_dataset}, test - {test_dataset}')
 
-        model = self.get_model_fnc(seed=seed)
+        input_shape = list(train_dataset.take(1).as_numpy_iterator())[0][0].shape
+
+        model = self.get_model_fnc(num_of_input_features=input_shape, seed=seed)
         exp_logger.info(f'Extracted model: {model}')
 
         model.fit(train_dataset,
