@@ -37,15 +37,15 @@ get_bin_model.metrics = ['binary_accuracy']
 get_bin_model.seed = 100
 
 # Experiment
-exp_name = 'exp1_no_dropout'
+exp_name = 'heart_attack_exp1_no_dropout'
 results_file = 'data/heart_attack/exp1_model_results.csv'
 exp_comments = 'no dropout | 1000 bs, 100 epochs | big model'
 
 ExperimentsRunner.get_dataset_callback = @get_heart_attack_dataset
 ExperimentsRunner.get_model_callback = @get_bin_model
-ExperimentsRunner.batch_size = 1000
+ExperimentsRunner.batch_size = 100
 ExperimentsRunner.epochs = 100
-ExperimentsRunner.steps_per_epoch = None
+ExperimentsRunner.steps_per_epoch = 30
 ExperimentsRunner.tensorboard_logs_name = %exp_name
 ExperimentsRunner.results_file = %results_file
 ExperimentsRunner.exp_name = %exp_name
