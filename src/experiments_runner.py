@@ -7,6 +7,7 @@ from src import constants as ct
 import pandas as pd
 import tensorflow as tf
 import logging
+
 exp_logger = logging.getLogger('Experiment Logger')
 
 
@@ -23,7 +24,8 @@ class ExperimentsRunner:
             results_file: str,
             exp_name: str,
             exp_comments: str,
-            save_model_checkpoint: Optional[str]
+            save_model_checkpoint: Optional[str],
+            num_of_intermediate_nodes: Optional[int] = None
     ):
         self.get_dataset_fnc = get_dataset_callback
         self.get_model_fnc = get_model_callback
@@ -35,6 +37,7 @@ class ExperimentsRunner:
         self.exp_name = exp_name
         self.exp_comments = exp_comments
         self.save_model_checkpoint = save_model_checkpoint
+        self.num_of_intermediate_nodes = num_of_intermediate_nodes
 
     def run_experiment(self) -> None:
         tensorboard_logs = os.path.join(ct.TENSORBOARD_LOGS_DIR, self.tensorboard_logs_name)
@@ -59,7 +62,11 @@ class ExperimentsRunner:
         test_dataset = test_dataset.batch(len(test_dataset))
         exp_logger.info(f'Extracted dataset: train - {train_dataset}, test - {test_dataset}')
 
-        model = self.get_model_fnc(num_of_input_features=input_shape[0], seed=seed)
+        num_of_intermediate_nodes = input_shape[
+            0] if self.num_of_intermediate_nodes is None else self.num_of_intermediate_nodes
+        model = self.get_model_fnc(num_of_input_features=input_shape[0],
+                                   num_of_intermediate_nodes=num_of_intermediate_nodes,
+                                   seed=seed)
         exp_logger.info(f'Extracted model: {model}')
 
         model.fit(train_dataset,
